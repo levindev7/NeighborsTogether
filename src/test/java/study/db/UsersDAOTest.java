@@ -1,9 +1,9 @@
-package study.model;
+package study.db;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import study.UsersDAO;
+import study.db.UsersDAO;
 import study.model.HouseGroup;
 
 import javax.persistence.EntityManager;

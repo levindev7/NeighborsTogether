@@ -1,4 +1,4 @@
-package study;
+package study.db;
 
 import com.sun.istack.Nullable;
 import study.model.Flat;

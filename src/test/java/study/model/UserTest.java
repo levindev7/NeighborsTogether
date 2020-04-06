@@ -1,4 +1,4 @@
-package study.db;
+package study.model;
 
 import org.junit.After;
 import org.junit.Before;
