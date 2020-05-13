@@ -17,7 +17,7 @@ public class LoginController {
     private UsersDAO users;
 
     @GetMapping(path = "/login")
-    public String loginPage() {
+    public String loginPage(@RequestParam(required = false) String login) {
         return "login";
     }
 
