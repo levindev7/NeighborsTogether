@@ -1,19 +1,26 @@
 package study.db;
 
 import com.sun.istack.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 import study.model.Flat;
 import study.model.HouseGroup;
 import study.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+@Repository
 public class UsersDAO {
     private EntityManager manager;
 
-    public UsersDAO(EntityManager manager) {
+    //!!!!!!!!!!!!!!!!!!почитать про аспекты и прокси
+    @Autowired  // переделать через конструктор, для обеспечения проверок и гарантированного создания объекта, привязка через поле только в тестах и при возникновении циклических зависимостей (когда создаваемые объекты ссылаются друг на друга)
+    public UsersDAO(@Qualifier("defaultManager") EntityManager manager) {
         this.manager = manager;
         Objects.requireNonNull(manager, "EntityManager shouldn't be null");
     }
@@ -42,8 +49,8 @@ public class UsersDAO {
     public HouseGroup findHouseGroupByAddress(String houseAddress) {
         try {
             return manager.createQuery("SELECT h from HouseGroup h WHERE h.houseAddress = :houseAddressToSearch", HouseGroup.class)
-                .setParameter("houseAddressToSearch", houseAddress)
-                .getSingleResult();
+                    .setParameter("houseAddressToSearch", houseAddress)
+                    .getSingleResult();
         } catch (NoResultException cause) {
             return null;
         }
@@ -83,6 +90,29 @@ public class UsersDAO {
             return null;
         }
     }
+
+    public void changeUserTelephone(User user, String newTelephoneNumber) {
+        manager.getTransaction().begin();
+        user.setTelephoneNumber(newTelephoneNumber);
+        manager.getTransaction().commit();
+    }
+
+    public void logOutHouseGroupOldUsers(Date dateBefore, HouseGroup logOutHouseGroup) {
+        manager.getTransaction().begin();
+        try {
+            manager.createQuery("UPDATE User set houseGroup = :houseGroup " +
+                    "where registrationDate < :before")
+                    .setParameter("houseGroup", logOutHouseGroup)
+                    .setParameter("before", dateBefore)
+                    .executeUpdate();
+        } catch (Throwable cause) {
+            manager.getTransaction().rollback();
+            throw cause;
+        }
+        manager.getTransaction().commit();
+    }
+
+
 
     public Flat createFlat(String flatNumber, HouseGroup houseGroup, User user) {
         Flat flat = new Flat();

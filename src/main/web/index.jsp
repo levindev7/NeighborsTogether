@@ -6,10 +6,22 @@
     <title></title>
   </head>
   <body>
+
+  <p>
+    <a href="login">Login</a>
+  </p>
+
+  <p>
+    <a href="${pageContext.request.contextPath}/user/register">Registration</a>
+  </p>
+
+
   <c:if test="${not empty sessionScope['verifiedUserName']}">
   <p>
     ${sessionScope['verifiedUserName']}
   </p>
+
+
   </c:if>
 
   <c:choose>
