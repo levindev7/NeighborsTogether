@@ -17,8 +17,6 @@ import study.db.UsersDAO;
 import study.model.HouseGroup;
 import study.web.RegistrationForm;
 import study.web.WebConfiguration;
-
-import java.util.Arrays;
 import java.util.Collections;
 
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -1,43 +1,37 @@
 package study.db;
 
 import com.sun.istack.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import study.model.Flat;
 import study.model.HouseGroup;
 import study.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @Repository
 public class UsersDAO {
-    private EntityManager manager;
 
-    //!!!!!!!!!!!!!!!!!!почитать про аспекты и прокси
-    @Autowired  // переделать через конструктор, для обеспечения проверок и гарантированного создания объекта, привязка через поле только в тестах и при возникновении циклических зависимостей (когда создаваемые объекты ссылаются друг на друга)
-    public UsersDAO(@Qualifier("defaultManager") EntityManager manager) {
-        this.manager = manager;
-        Objects.requireNonNull(manager, "EntityManager shouldn't be null");
+    @PersistenceContext //вместо @Autowired помечаем manager, который будет создавать @Transactional транзакции
+    private EntityManager manager; // и через конструктор инъекция уже недоступна, только через поле
+
+    /*аннотация @Transactional для метода работы с базой заменяет конструкцию -> manager.getTransaction.begin -> try{...persist} -> catch{...rollback}->...commit
+
+    при этом во время исполнения создается прокси класс наследующий наш класс, он переопределяет все @Transactional методы и добавляет обертку try/catch
+    class UsersDAOWrapper extends UsersDAO {
     }
 
+    при этом методы и классы под @Transactional не могут быть final
+    * */
+    @Transactional
     public HouseGroup createHouseGroup(String houseAddress) {
         HouseGroup houseGroup = new HouseGroup(houseAddress);
-
-        // Если persist не пройдет, то транзакция будет в подвешенном состоянии, поэтому в этом случае обязательно после begin должен следовать откат rollback
-        manager.getTransaction().begin();
-        try {
-            manager.persist(houseGroup);
-        } catch (Throwable cause) {
-            manager.getTransaction().rollback();
-            throw cause;
-        }
-        manager.getTransaction().commit();
-
+        manager.persist(houseGroup);
         return houseGroup;
     }
 
@@ -56,6 +50,7 @@ public class UsersDAO {
         }
     }
 
+    @Transactional
     public User createUser(String login, String password, String telephoneNumber, HouseGroup houseGroup) {
         User user = new User();
         user.setLogin(login);
@@ -63,15 +58,7 @@ public class UsersDAO {
         user.setTelephoneNumber(telephoneNumber);
         user.setHouseGroup(houseGroup);
 
-
-        manager.getTransaction().begin();
-        try {
-            manager.persist(user);
-        } catch (Throwable cause) {
-            manager.getTransaction().rollback();
-            throw cause;
-        }
-        manager.getTransaction().commit();
+        manager.persist(user);
 
         return user;
     }
@@ -91,43 +78,28 @@ public class UsersDAO {
         }
     }
 
+    @Transactional
     public void changeUserTelephone(User user, String newTelephoneNumber) {
-        manager.getTransaction().begin();
         user.setTelephoneNumber(newTelephoneNumber);
-        manager.getTransaction().commit();
     }
 
+    @Transactional
     public void logOutHouseGroupOldUsers(Date dateBefore, HouseGroup logOutHouseGroup) {
-        manager.getTransaction().begin();
-        try {
             manager.createQuery("UPDATE User set houseGroup = :houseGroup " +
                     "where registrationDate < :before")
                     .setParameter("houseGroup", logOutHouseGroup)
                     .setParameter("before", dateBefore)
                     .executeUpdate();
-        } catch (Throwable cause) {
-            manager.getTransaction().rollback();
-            throw cause;
-        }
-        manager.getTransaction().commit();
     }
 
-
-
+    @Transactional
     public Flat createFlat(String flatNumber, HouseGroup houseGroup, User user) {
         Flat flat = new Flat();
         flat.setFlatNumber(flatNumber);
         flat.setHouseGroupFlats(houseGroup);
         flat.setUser(user);
 
-        manager.getTransaction().begin();
-        try {
-            manager.persist(flat);
-        } catch (Throwable cause) {
-            manager.getTransaction().rollback();
-            throw cause;
-        }
-        manager.getTransaction().commit();
+        manager.persist(flat);
 
         return flat;
     }

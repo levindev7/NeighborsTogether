@@ -4,11 +4,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import study.web.ProdConfiguration;
 import study.web.WebConfiguration;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 @Configuration
 @ComponentScan(basePackages = {"study.web", "study.db"},
@@ -18,7 +17,9 @@ import javax.persistence.Persistence;
                 ))
 public class TestConfiguration {
     @Bean
-    public EntityManagerFactory getEntityManagerFactory () {
-        return Persistence.createEntityManagerFactory("TestPersistenceUnit");
+    public LocalContainerEntityManagerFactoryBean createEntityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
+        bean.setPersistenceUnitName("TestPersistenceUnit");
+        return bean;
     }
 }

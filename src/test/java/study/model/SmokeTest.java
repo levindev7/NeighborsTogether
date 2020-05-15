@@ -4,10 +4,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import study.model.Flat;
-import study.model.HouseGroup;
-import study.model.User;
-import study.model.UserStatus;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

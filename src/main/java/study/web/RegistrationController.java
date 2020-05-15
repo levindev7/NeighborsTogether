@@ -17,7 +17,6 @@ public class RegistrationController {
     @Autowired
     private UsersDAO users;
 
-
     @GetMapping(path = "/user/register") // пусть можно указать как для метода, так и для всего класса
     public String getRegistrationForm(ModelMap model) {
         List<HouseGroup> houseGroups = users.findAllGroups(); // запрашиваем список групп домов (адресов)
@@ -35,8 +34,8 @@ public class RegistrationController {
 
     }
 
-
     @PostMapping(path = "/user/register")
+    // @Transactional нужно было бы отметить если бы совершалось несколько связанных действий
     public String processRegistrationForm(@RequestParam String login,
                                         @RequestParam String password,
                                         @RequestParam String telephoneNumber,
@@ -50,6 +49,5 @@ public class RegistrationController {
             users.createUser(login, password, telephoneNumber, houseGroup);
 
             return "redirect:/login?login=" + login; // редирект на логин
-
     }
 }

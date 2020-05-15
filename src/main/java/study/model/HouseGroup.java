@@ -58,9 +58,9 @@ public class HouseGroup {
         if (o == null || getClass() != o.getClass()) return false;
         HouseGroup that = (HouseGroup) o;
         return id == that.id &&
-                Objects.equals(houseAddress, that.houseAddress) &&
-                Objects.equals(users, that.users) &&
-                Objects.equals(flats, that.flats);
+                Objects.equals(houseAddress, that.houseAddress);
+                //Objects.equals(users, that.users) && // коллекции не должны быть задействованы в методе equals т.к. могут вызвать бесконечную рекурсию
+                //Objects.equals(flats, that.flats);
     }
 
     @Override
