@@ -3,6 +3,7 @@ package study.web;
 import study.model.HouseGroup;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RegistrationForm {
     private String login;
@@ -58,5 +59,23 @@ public class RegistrationForm {
 
     public void setHouseAddress(String houseAddress) {
         this.houseAddress = houseAddress;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RegistrationForm that = (RegistrationForm) o;
+        return Objects.equals(login, that.login) &&
+                Objects.equals(password, that.password) &&
+                Objects.equals(telephoneNumber, that.telephoneNumber) &&
+                Objects.equals(houseGroups, that.houseGroups) &&
+                Objects.equals(selectedHouseGroup, that.selectedHouseGroup) &&
+                Objects.equals(houseAddress, that.houseAddress);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(login, password, telephoneNumber, houseGroups, selectedHouseGroup, houseAddress);
     }
 }

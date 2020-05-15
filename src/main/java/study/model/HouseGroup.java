@@ -2,6 +2,7 @@ package study.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -49,5 +50,21 @@ public class HouseGroup {
 
     public List<Flat> getFlats() {
         return flats;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HouseGroup that = (HouseGroup) o;
+        return id == that.id &&
+                Objects.equals(houseAddress, that.houseAddress) &&
+                Objects.equals(users, that.users) &&
+                Objects.equals(flats, that.flats);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, houseAddress, users, flats);
     }
 }
