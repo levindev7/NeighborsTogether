@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import study.web.ProdConfiguration;
 import study.web.WebConfiguration;
 
@@ -15,7 +14,7 @@ import javax.persistence.Persistence;
 @ComponentScan(basePackages = {"study.web", "study.db"},
         excludeFilters = @ComponentScan.Filter(
                 type = FilterType.ASSIGNABLE_TYPE,
-                classes = {ProdConfiguration.class}
+                classes = {ProdConfiguration.class, WebConfiguration.class} //отключение веба
                 ))
 public class TestConfiguration {
     @Bean

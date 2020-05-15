@@ -16,12 +16,13 @@ import org.springframework.web.context.WebApplicationContext;
 import study.db.UsersDAO;
 import study.model.HouseGroup;
 import study.web.RegistrationForm;
+import study.web.WebConfiguration;
 
 import java.util.Arrays;
 import java.util.Collections;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestConfiguration.class)
+@ContextConfiguration(classes = {TestConfiguration.class, WebConfiguration.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @WebAppConfiguration
 public class RegistrationControllerTest {
