@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import study.db.UsersDAO;
+import study.db.UsersRepository;
 import study.model.User;
 
 import javax.servlet.http.HttpSession;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
     public static final String VERIFIED_USER_NAME_ATTRIBUTE = "verifiedUserName";
     @Autowired
-    private UsersDAO users;
+    private UsersRepository users;
 
     @GetMapping(path = "/login")
     public String loginPage(@RequestParam(required = false) String login,
@@ -34,7 +34,7 @@ public class LoginController {
             return "redirect:/";
         }
 
-        User user = users.findUserByLogin(username);
+        User user = users.findByLogin(username);
             //user.getHouseGroup().getUsers(); если нужна ленивая коллекция, то получаем её до закрытия менеджера
 
 

@@ -12,7 +12,7 @@ import javax.persistence.EntityManagerFactory;
 @EnableTransactionManagement
 public class TransactionConfiguration {
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory factory) {
+    public PlatformTransactionManager transactionManager(EntityManagerFactory factory) { //factory из ProdConfig
         return new JpaTransactionManager(factory);
     }
 }

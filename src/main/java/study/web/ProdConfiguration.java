@@ -9,7 +9,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 @ComponentScan(basePackages = {"study.web", "study.db"})  // показывает путь в котором нужно искать классы
 public class ProdConfiguration {
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() { //factory делающая manager с поддержкой @Transactional
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
         bean.setPersistenceUnitName("ProdPersistenceUnit");
         return bean;

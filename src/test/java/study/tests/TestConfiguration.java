@@ -17,7 +17,7 @@ import study.web.WebConfiguration;
                 ))
 public class TestConfiguration {
     @Bean
-    public LocalContainerEntityManagerFactoryBean createEntityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
         bean.setPersistenceUnitName("TestPersistenceUnit");
         return bean;

@@ -28,7 +28,7 @@ public class UsersDAO {
 
     при этом методы и классы под @Transactional не могут быть final
     * */
-    @Transactional
+    @Transactional //можно установить режим изоляции транзакций, тайм ауйт, propagation (например REQUIRED - проверка были ли уже транзакции снаружи, NEVER - не было транзакций, NESTED  - имитация вложенной транзакции)
     public HouseGroup createHouseGroup(String houseAddress) {
         HouseGroup houseGroup = new HouseGroup(houseAddress);
         manager.persist(houseGroup);

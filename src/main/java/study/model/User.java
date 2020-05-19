@@ -27,7 +27,17 @@ public class User {
     @Column(length = 14, nullable = false)
     private String telephoneNumber;
 
-    //@Column
+    @Column
+    private int bonusScore;
+
+    public int getBonusScore() {
+        return bonusScore;
+    }
+
+    public void setBonusScore(int bonusScore) {
+        this.bonusScore = bonusScore;
+    }
+//@Column
     //@Convert(converter = ColorConverterExample.class)
     //private Color color;
 
