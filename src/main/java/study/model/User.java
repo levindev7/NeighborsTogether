@@ -1,6 +1,10 @@
 package study.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.PastOrPresent;
 import java.util.Date;
 import java.util.List;
 
@@ -42,9 +46,11 @@ public class User {
     //private Color color;
 
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private HouseGroup houseGroup;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     //@ManyToMany() - mappedBy указывать с обеих сторон
     //@JoinColumn(name = "user_fk") - если schema уже есть
@@ -52,6 +58,8 @@ public class User {
     private List<Flat> flats;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @PastOrPresent
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     private Date registrationDate = new Date();
 
 

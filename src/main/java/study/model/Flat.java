@@ -1,6 +1,8 @@
 package study.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,9 +15,11 @@ public class Flat {
     @Column(nullable = false)
     private String flatNumber;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private User user;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private HouseGroup houseGroupFlats;
 

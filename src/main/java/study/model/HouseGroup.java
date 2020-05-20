@@ -1,5 +1,7 @@
 package study.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -22,9 +24,11 @@ public class HouseGroup {
     public HouseGroup() {
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "houseGroup")
     private List<User> users;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "houseGroupFlats")
     private List<Flat> flats;
 
